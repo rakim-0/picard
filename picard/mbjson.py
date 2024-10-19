@@ -636,14 +636,19 @@ def add_secondary_release_types(node, m):
 def add_genres_from_node(node, obj):
     if obj is None:
         return
-    if 'genres' in node:
-        add_genres(node['genres'], obj)
-    if 'tags' in node:
-        add_genres(node['tags'], obj)
-    if 'user-genres' in node:
-        add_user_genres(node['user-genres'], obj)
-    if 'user-tags' in node:
-        add_user_genres(node['user-tags'], obj)
+    config = get_config()
+    if config.setting['use_genres']:
+        use_folksonomy = config.setting['folksonomy_tags']
+    if use_folksonomy:
+        if 'tags' in node:
+            add_genres(node['tags'], obj)
+        if 'user-tags' in node:
+            add_user_genres(node['user-tags'], obj)
+    else:
+        if 'genres' in node:
+            add_genres(node['genres'], obj)
+        if 'user-genres' in node:
+            add_user_genres(node['user-genres'], obj)
 
 
 def add_genres(node, obj):
